@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>table list</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+    <table class="tbl_list" id="table" border="1">
+    <thead>
+    <tr>
+        <th v-for="th in headers">{{th}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr v-for="td in rows">
+        <td>{{td.title}}</td>
+        <td>{{td.name}}</td>
+        <td>{{td.date}}</td>
+        <td>{{td.view}}</td>
+        <td>{{td.like}}</td>
+    </tr>
+    </tbody>
+    </table>
+
+    <script>
+    var table = new Vue({
+        el: '#table',
+        data: {
+            headers: ['제목', '작성자', '작성일', '조회', '좋아요'],
+            rows: [
+                {title:'제목1', name:'임국태', date:'2019.03.03', view:'1', like:'2'},
+                {title:'제목2', name:'임국태2', date:'2019.03.03', view:'2', like:'3'}
+            ]
+        }
+    })
+    </script>
+</body>
+</html>
