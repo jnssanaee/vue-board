@@ -5,7 +5,6 @@
     text-decoration : underline;
     color : blue;
   }
-
   td {
     text-align : center;
   }
@@ -15,7 +14,7 @@
 </head>
 <body>
   <div id="app">
-    <table>
+    <table v-if="printArticle">
       <thead>
         <tr>
           <th>제목</th>
@@ -37,8 +36,27 @@
         </tr>
       </tbody>
     </table>
+    <div v-if="printContent">
+      <h3>제목입니다</h3>
+      <div>
+        내용입니다
+      </div>
+      <button type="button" @click.stop="displayContent()">목록</button>
+      <br><br>
+      <div>
+        <li v-for="reply in replyList" :key="reply.id">
+          {{reply.writer}} - {{reply.content}}
+          <ol v-for="rereply in reply.rereplyList">
+            {{rereply.content}}
+          </ol>
+        </li>
+        <input type="text" v-model="replyContent" value="">
+        <button type="button" @click="appendReply()">댓글 달기</button>
+      </div>
+    </div>
   </div>
 </body>
+
 <script>
   var articleList = [
     {id : 1, title : "title1", date : "20190303", writer : "작성자1", hits : 2, like : 1, isBlocked: false},
@@ -50,22 +68,53 @@
     {id : 7, title : "title7", date : "20171112", writer : "작성자7", hits : 1, like : 1, isBlocked: false},
   ]
 
+  var replyList = [
+    {id : 1, content: '댓글입니다', date : "20171112", writer : "작성자1", rereplyList : [{content : '대댓글입니다'}]},
+  ]
+
   var app = new Vue({
     el: '#app',
     data: {
       articleList,
+      replyList,
+      printArticle : true,
+      printContent : false,
+      replyContent : '',
     },
     methods: {
-      readArticle(articleId) {
-        alert('글 id: ' + articleId)
+      displayContent() {
+        this.printContent = false
+        this.printArticle = true
       },
+      readArticle(articleId) {
+        this.printContent = true
+        this.printArticle = false
+      },
+      appendReply() {
+        this.replyList.push({
+          content : this.replyContent,
+          date : this.getToday(),
+          writer : "댓글러",
+          rereplyList : [],
+        })
 
+        this.replyContent = ''
+
+        alert('댓글이 작성됐습니다!')
+      },
       formatDate(date) {
         const year = date.substring(0, 4)
         const month = date.substring(4, 6)
         const day = date.substring(6, 8)
-
         return year + '.' + month + '.' + day
+      },
+      getToday() {
+        const today = new Date()
+        const year = today.getFullYear()
+        const month = today.getMonth() + 1
+        const date = today.getDate()
+
+        return this.formatDate(year + '' + month + '' + date)
       }
     }
   })
