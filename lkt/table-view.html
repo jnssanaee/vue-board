@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>table list</title>
+    <title>table view</title>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <style>
       *{margin:0; padding:0;font-size:12px;}
@@ -27,6 +27,10 @@
       .area_input.sub{padding-left: 20px;}
       .area_input.sub textarea{height:50px;}
       .area_input.sub button{height: 55px;line-height: 55px;}
+
+      [v-clock]{
+        display: none
+      }
     </style>
 </head>
 <body>
@@ -40,7 +44,7 @@
             <span class="views">조회수 10</span>
             <span class="like" id="like">
                 <button @click="toggle()">좋아요</button>
-                <span class="num">{{number}}</span>
+                <span class="num" v-clock>{{number}}</span>
             </span>
         </div>
 
@@ -52,11 +56,11 @@
             <div class="area_comment">
                 <span class="name">민건희</span>
                 <span class="date">19.03.03 16:30</span>
-                <button class="btn_comment" @click="toggleText(); isShow = !isShow">{{message}}</button>
+                <button class="btn_comment" @click="toggleText(); isShow = !isShow" v-clock>{{message}}</button>
                 <p class="comment">댓글이당. 댓글이당. 댓글이당. 댓글이당. 댓글이당.</p>
             </div>
 
-            <div class="area_input sub" v-show="isShow" style="display:none">
+            <div class="area_input sub" v-show="isShow" v-clock>
               <textarea name="" id="" placeholder="댓글을 입력해주세요"></textarea>
               <button type="button">등록</button>
             </div>
@@ -110,6 +114,79 @@
           }
         }
     })
+
+    
+
     </script>
+
+
+<div id="todo-list-example">
+  <!-- <input
+    v-model="newTodoText"
+    v-on:keyup.enter="addNewTodo"
+    placeholder="Add a todo"
+  > -->
+
+  <div class="area_input sub">
+    <textarea name="" id="" v-model="newTodoText" placeholder="댓글을 입력해주세요"></textarea>
+    <button type="button" v-on:click="addNewTodo">등록</button>
+  </div>
+
+  <ul>
+    <li
+      is="todo-item"
+      v-for="(todo, index) in todos"
+      v-bind:key="todo.id"
+      v-bind:title="todo.title"
+      v-on:remove="todos.splice(index, 1)"
+    ></li>
+  </ul>
+</div>
+
+<script>
+Vue.component('todo-item', {
+  template: '\
+    <li>\
+      {{ title }}\
+      <button v-on:click="$emit(\'remove\')">X</button>\
+    </li>\
+  ',
+  props: ['title']
+})
+
+new Vue({
+  el: '#todo-list-example',
+  data: {
+    newTodoText: '',
+    todos: [
+      {
+        id: 1,
+        title: 'Do the dishes',
+      },
+      {
+        id: 2,
+        title: 'Take out the trash',
+      },
+      {
+        id: 3,
+        title: 'Mow the lawn'
+      }
+    ],
+    nextTodoId: 4
+  },
+  methods: {
+    addNewTodo: function () {
+      this.todos.push({
+        id: this.nextTodoId++,
+        title: this.newTodoText
+      })
+      this.newTodoText = ''
+    }
+  }
+})
+
+  
+</script>
+
 </body>
 </html>
