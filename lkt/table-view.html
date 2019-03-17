@@ -19,33 +19,30 @@
       .box_comment{background: #ddd;padding:10px}
       p.comment{padding-top:5px;}
       .area_comment{padding:10px 0 10px;border-bottom: 1px dotted #000;}
-
+      .area_comment > span{margin-right: 6px;}
       .area_input{position: relative;padding:10px 90px 0 0;}
       .area_input textarea{width:100%;height:80px;;}
       .area_input button{position:absolute;right:0;top:10px;display:inline-block;border:1px solid #000;width:80px;line-height:80px;text-align: center;background: #fff;}
-
       .area_input.sub{padding-left: 20px;}
       .area_input.sub textarea{height:50px;}
       .area_input.sub button{height: 55px;line-height: 55px;}
-
-      [v-clock]{
-        display: none
-      }
+      .btn_remove{width:15px; border:1px solid #000;margin:0 10px;}
+      [v-clock]{display:none}
     </style>
 </head>
 <body>
-    <section>
-        <h1 class="tit">제목입니다.</h1>
-        <p class="date">19.03.03 15:30</p>
+    <section id="app">
+      <h1 class="tit">제목입니다.</h1>
+      <p class="date">19.03.03 15:30</p>
 
         <div class="area_writer">
-            <span class="writer">임국태</span>
+            <span class="writer">{{writer}}</span>
             |
             <span class="views">조회수 10</span>
-            <span class="like" id="like">
+            <!-- <span class="like" id="like">
                 <button @click="toggle()">좋아요</button>
                 <span class="num" v-clock>{{number}}</span>
-            </span>
+            </span> -->
         </div>
 
         <div class="area_review">
@@ -53,134 +50,147 @@
         </div>
 
         <div class="box_comment" id="box_comment">
-            <div class="area_comment">
+            <!-- <div class="area_comment">
                 <span class="name">민건희</span>
                 <span class="date">19.03.03 16:30</span>
                 <button class="btn_comment" @click="toggleText(); isShow = !isShow" v-clock>{{message}}</button>
                 <p class="comment">댓글이당. 댓글이당. 댓글이당. 댓글이당. 댓글이당.</p>
-            </div>
+            </div> -->
+            <comment-list
+              v-for="(todo, index, name, date, comment, remove) in todos"
+              v-bind:key="todo.id"
+              v-bind:name="todo.name"
+              v-bind:date="todo.date"
+              v-bind:comment="todo.comment"
+              v-on:remove="todos.splice(index, 1)"
+            ></comment-list>
 
-            <div class="area_input sub" v-show="isShow" v-clock>
-              <textarea name="" id="" placeholder="댓글을 입력해주세요"></textarea>
-              <button type="button">등록</button>
-            </div>
+            <!-- <div class="area_input sub">
+              <textarea name="" id="" v-model="newTodoText" placeholder="댓글을 입력해주세요"></textarea>
+              <button type="button" v-on:click="addNewTodo">등록</button>
+            </div> -->
 
-            <div class="area_comment">
+            <!-- <div class="area_comment">
                 <span class="name">민건희</span>
                 <span class="date">19.03.03 16:30</span>
                 <button class="btn_comment">답글</button>›
                 <p class="comment">댓글이당. 댓글이당. 댓글이당. 댓글이당. 댓글이당.</p>
-            </div>
+            </div> -->
 
             <div class="area_input">
-              <textarea name="" id="" placeholder="댓글을 입력해주세요"></textarea>
-              <button type="button">등록</button>
+              <textarea name="" id="" v-model="newTodoComment" placeholder="댓글을 입력해주세요"></textarea>
+              <button type="button" v-on:click="addNewTodo">등록</button>
             </div>
         </div>
     </section>
 
     <script>
-    var toggleNum = new Vue({
-        el: '#like',
-        data: {
-          counter: true,
-          number: 10
-        },
-        methods: {
-          toggle: function(){
-            this.counter = !this.counter;
-            if(this.counter == false) {
-              this.number += 1
-            } else {
-              this.number -= 1
-            }
-          }
-        }
-    })
+    // var toggleNum = new Vue({
+    //     el: '#like',
+    //     data: {
+    //       counter: true,
+    //       number: 10
+    //     },
+    //     methods: {
+    //       toggle: function(){
+    //         this.counter = !this.counter;
+    //         if(this.counter == false) {
+    //           this.number += 1
+    //         } else {
+    //           this.number -= 1
+    //         }
+    //       }
+    //     }
+    // })
 
-    var toggleComment = new Vue({
-        el: '#box_comment',
-        data: {
-          message: '댓글',
-          isShow: false
-        },
-        methods: {
-          toggleText: function(){
-            if(this.message === '댓글'){
-              this.message = '취소';
-            } else {
-              this.message = '댓글';
-            }
-          }
-        }
-    })
+    // var toggleComment = new Vue({
+    //     el: '#box_comment',
+    //     data: {
+    //       message: '댓글',
+    //       isShow: false
+    //     },
+    //     methods: {
+    //       toggleText: function(){
+    //         if(this.message === '댓글'){
+    //           this.message = '취소';
+    //         } else {
+    //           this.message = '댓글';
+    //         }
+    //       }
+    //     }
+    // })
 
     
 
     </script>
 
-
-<div id="todo-list-example">
-  <!-- <input
-    v-model="newTodoText"
-    v-on:keyup.enter="addNewTodo"
-    placeholder="Add a todo"
-  > -->
-
-  <div class="area_input sub">
-    <textarea name="" id="" v-model="newTodoText" placeholder="댓글을 입력해주세요"></textarea>
-    <button type="button" v-on:click="addNewTodo">등록</button>
-  </div>
-
-  <ul>
-    <li
-      is="todo-item"
-      v-for="(todo, index) in todos"
-      v-bind:key="todo.id"
-      v-bind:title="todo.title"
-      v-on:remove="todos.splice(index, 1)"
-    ></li>
-  </ul>
-</div>
-
 <script>
-Vue.component('todo-item', {
+Vue.component('comment-list', {
+  props: ['name', 'date', 'comment'], //props는 하위 컴포넌트로 전달될 수 있다
   template: '\
-    <li>\
-      {{ title }}\
-      <button v-on:click="$emit(\'remove\')">X</button>\
-    </li>\
-  ',
-  props: ['title']
+    <div class="area_comment">\
+      <span class="name">{{ name }}</span> \
+      <span class="date">{{ date }}</span> \
+      <button class="btn_comment" v-on:click="$emit(\'addNewReply\')">댓글</button>\
+      <button v-on:click="$emit(\'remove\')" class="btn_remove">X</button>\
+      <button v-on:click="$emit(\'edit\')" class="btn_edit">수정</button>\
+      <p class="comment">{{ comment }}</p>\
+    </div>\
+  '
 })
 
+// Vue.component('reply-item', {
+//   props: ['name', 'date', 'comment', 'message'], //props는 하위 컴포넌트로 전달될 수 있다
+//   template: '\
+//     <div class="area_comment">\
+//       <span class="name">{{ name }}</span> \
+//       <span class="date">{{ date }}</span> \
+//       <button class="btn_comment" @click="toggleText(); isShow = !isShow" v-clock>댓글</button>\
+//       <p class="comment">{{ comment }}</p>\
+//     </div>\
+//   '
+// })
+
 new Vue({
-  el: '#todo-list-example',
+  el: '#app',
   data: {
     newTodoText: '',
+    newTodoName: '',
+    newTodoDate: '',
+    newTodoComment: '',
+
     todos: [
-      {
-        id: 1,
-        title: 'Do the dishes',
-      },
-      {
-        id: 2,
-        title: 'Take out the trash',
-      },
-      {
-        id: 3,
-        title: 'Mow the lawn'
-      }
+      {id: 1, name: '임국태', date: '19.03.03 11:30', comment: '댓글이당1111111111111'},
+      {id: 2, name: '민건희', date: '19.03.03 12:30', comment: '댓글이당2222222222222'},
+      {id: 3, name: '안상현', date: '19.03.03 16:30', comment: '댓글이당3333333333333'}
     ],
-    nextTodoId: 4
+    nextTodoId: 4,
+
+    writer: '글쓴이',
+    show: false
   },
   methods: {
     addNewTodo: function () {
       this.todos.push({
         id: this.nextTodoId++,
-        title: this.newTodoText
+        name: this.writer,
+        date: new Date(),
+        comment: this.newTodoComment
+        //title: this.newTodoText
       })
-      this.newTodoText = ''
+      this.newTodoText = '',
+      this.newTodoName = '',
+      this.newTodoDate = ''
+    },
+    addNewReply: function () {
+      alert(1);
+      this.todos.push({
+        id: this.nextTodoId++,
+        name: this.writer,
+        date: new Date(),
+        comment: this.newTodoComment
+      })
+      
     }
   }
 })
