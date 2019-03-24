@@ -1,30 +1,3 @@
-    // var toggleComment = new Vue({
-    //     el: '#box_comment',
-    //     data: {
-    //       message: '댓글',
-    //       isShow: false
-    //     },
-    //     methods: {
-    //       toggleText: function(){
-    //         if(this.message === '댓글'){
-    //           this.message = '취소';
-    //         } else {
-    //           this.message = '댓글';
-    //         }
-    //       }
-    //     }
-    // })
-
-var eventBus = new Vue;
-
-const inputSub = {props: ['id'], template: '\
-  <div class="area_input sub" id="area_sub">\
-    <textarea placeholder="댓글을 입력해주세요"></textarea>\
-    <button type="button">등록</button>\
-  </div>\
-'}
-
-
 var app = new Vue({
   el: '#app',
   data: {
@@ -32,10 +5,7 @@ var app = new Vue({
     newTodoName: '',
     newTodoDate: '',
     newTodoComment: '',
-    showCommentInputArea : false,
-    isHidden: false,
-    isActive: false,
-    hide: false,
+    newReplyComment: '',
 
     todos: [
       {id: 1, name: '임국태', date: '19.03.03 11:30', comment: '댓글이당1111111111111'},
@@ -49,7 +19,6 @@ var app = new Vue({
 
     counter: true,
     number: 10,
-    active: false,
     opened: []
 
   },
@@ -64,6 +33,17 @@ var app = new Vue({
       })
       this.newTodoComment = ''
     },
+    addReplyTodo: function (i) {
+      const nextIndex = i++;
+      this.todos.splice(nextIndex, 0, {
+        id: this.nextTodoId++,
+        name: this.writer,
+        date: new Date(),
+        comment: this.newReplyComment
+      })
+      this.newReplyComment = '';
+      
+    },
     countup: function(){
       this.counter = !this.counter;
       if(this.counter == false) {
@@ -72,10 +52,6 @@ var app = new Vue({
         this.number -= 1
       }
     },
-    // toggle: function(index){
-    //   console.log(index.id);
-    //   //this.todos[index.id].active = !this.todos[index].active;
-    // },
     remove: function(index){
       this.todos.splice(index, 1)
     },
@@ -84,11 +60,14 @@ var app = new Vue({
     },
     toggle(id) {
       const index = this.opened.indexOf(id);
+      //console.log(id);
       if (index > -1) {
       	this.opened.splice(index, 1)
       } else {
       	this.opened.push(id)
       }
+
+      
     }
   }
 })

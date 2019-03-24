@@ -38,8 +38,8 @@
               <p class="comment">{{ todo.comment }}</p>
 
               <div class="area_input sub" id="area_sub" v-if="opened.includes(todo.id)">
-                <textarea placeholder="댓글을 입력해주세요" v-model="newTodoComment"></textarea>
-                <button type="button" v-on:click="addNewTodo">등록</button>
+                <textarea placeholder="댓글을 입력해주세요" v-model="newReplyComment"></textarea>
+                <button type="button" v-on:click="addReplyTodo(todo.id)">등록</button>
               </div>
 
               
