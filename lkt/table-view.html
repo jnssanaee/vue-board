@@ -29,7 +29,7 @@
         </div>
 
         <div class="box_comment" id="box_comment">
-            <div class="area_comment" v-for="todo in todos" :key="todo.id">
+            <div class="area_comment" v-for="(todo, index) in todos" :key="todo.id" :class="{ replybox: todo.class }">
               <span class="name">{{ todo.name }}</span>
               <span class="date">{{ todo.date }}</span>
               <button class="btn_comment" @click="toggle(todo.id)" :class="{ opened: opened.includes(todo.id) }">댓글</button>

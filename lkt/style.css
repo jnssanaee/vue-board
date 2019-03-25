@@ -11,7 +11,8 @@ h1 + .date{float:right;margin-top: -20px; font-size:12px;}
 .area_review{padding:20px 0 50px;}
 .box_comment{background: #ddd;padding:10px}
 p.comment{padding-top:5px;}
-.area_comment{padding:10px 0 10px;border-bottom: 1px dotted #000;}
+.area_comment{padding:10px 0;border-bottom: 1px dotted #000;}
+.area_comment.replybox{padding-left: 44px;background: url('./bg_reply.gif') no-repeat 29px 14px;}
 .area_comment > span{margin-right: 6px;}
 .area_input{position: relative;padding:10px 90px 0 0;}
 .area_input textarea{width:100%;height:80px;;}
