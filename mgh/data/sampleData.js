@@ -22,7 +22,7 @@ var commentList = [
         content: '대댓글이당',
         writer: '임국태',
         writeDate: '20190104120000',
-      },
+      },     
     ],
   },
   {
@@ -32,7 +32,6 @@ var commentList = [
     writeDate: '20190312141040',
     showCommentInputArea: false,
     showModifyArea: false,
-    commentToCommentList: [
-    ],
+    commentToCommentList: [],
   }
 ]
