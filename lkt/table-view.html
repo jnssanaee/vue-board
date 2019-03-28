@@ -28,25 +28,25 @@
             내용입니다. 내용입니다. 내용입니다.
         </div>
 
+        
         <div class="box_comment" id="box_comment">
-            <div class="area_comment" v-for="(todo, index) in todos" :key="todo.id" :class="{ replybox: todo.class }">
+            <div class="area_comment" v-for="(todo, index) in todos" :key="index" :class="{ replybox: todo.class }">
+              <span class="index">INDEX : {{ index }} // </span>
               <span class="name">{{ todo.name }}</span>
               <span class="date">{{ todo.date }}</span>
               <button class="btn_comment" @click="toggle(todo.id)" :class="{ opened: opened.includes(todo.id) }">댓글</button>
-              <button @click="remove(index)" class="btn_remove">X</button>
-              <button v-on:click="edit" class="btn_edit">수정</button>
+              <button class="btn_edit" v-if="todo.myComment">수정</button>
+              <button class="btn_remove" v-if="todo.myComment" @click="remove(index)">삭제</button>
               <p class="comment">{{ todo.comment }}</p>
 
               <div class="area_input sub" id="area_sub" v-if="opened.includes(todo.id)">
                 <textarea placeholder="댓글을 입력해주세요" v-model="newReplyComment"></textarea>
-                <button type="button" v-on:click="addReplyTodo(todo.id)">등록</button>
+                <button type="button" @click="addReplyTodo(index)">등록</button>
               </div>
-
-              
             </div>
             <div class="area_input">
               <textarea name="" id="" v-model="newTodoComment" placeholder="댓글을 입력해주세요"></textarea>
-              <button type="button" v-on:click="addNewTodo">등록</button>
+              <button type="button" @click="addNewTodo">등록</button>
             </div>
         </div>
     </section>

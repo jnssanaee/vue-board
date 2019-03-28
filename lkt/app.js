@@ -1,26 +1,22 @@
 var app = new Vue({
   el: '#app',
   data: {
-    newTodoText: '',
-    newTodoName: '',
-    newTodoDate: '',
     newTodoComment: '',
     newReplyComment: '',
-
+    
     todos: [
-      {id: 1, name: '임국태', date: '19.03.03 11:30', comment: '댓글이당1111111111111', class:''},
-      {id: 2, name: '민건희', date: '19.03.03 12:30', comment: '댓글이당2222222222222', class:''},
-      {id: 3, name: '안상현', date: '19.03.03 16:30', comment: '댓글이당3333333333333', class:''}
+      {id: 1, name: '임국태', date: '19.03.03 11:30', comment: '댓글이당11'},
+      {id: 2, name: '민건희', date: '19.03.03 12:30', comment: '댓글이당22'},
+      {id: 3, name: '안상현', date: '19.03.03 16:30', comment: '댓글이당33'}
     ],
     nextTodoId: 4,
-
     writer: '글쓴이',
-    show: false,
 
     counter: true,
     number: 10,
     opened: []
 
+    //myComment: false
   },
   methods: {
     addNewTodo: function () {
@@ -28,22 +24,28 @@ var app = new Vue({
         id: this.nextTodoId++,
         name: this.writer,
         date: new Date(),
-        comment: this.newTodoComment
-        //title: this.newTodoText
+        comment: this.newTodoComment,
+        myComment: true
       })
-      this.newTodoComment = ''
+      this.newTodoComment = '';
     },
-    addReplyTodo: function (i) {
-      //const nextIndex = i++;
-      this.todos.splice(1, 0, {
-        id: this.nextTodoId++,
+    addReplyTodo: function (index) { 
+      var next = ++index;
+      this.todos.splice(next, 0, { // 가운데 인자를 0 선언 시 다음 인자부터 추가된다.
         name: this.writer,
         date: new Date(),
         comment: this.newReplyComment,
         class: true
       })
       this.newReplyComment = '';
-      console.log(todo.id);
+    },
+    toggle(id) {
+      const indexReply = this.opened.indexOf(id); //indexOf내장함수 : 존재할경우 index, 아닐경우 -1 반환
+      if (indexReply > -1) {
+        this.opened.splice(indexReply, 1);
+      } else {
+        this.opened.push(id);
+      }
     },
     countup: function(){
       this.counter = !this.counter;
@@ -55,21 +57,9 @@ var app = new Vue({
     },
     remove: function(index){
       this.todos.splice(index, 1)
-    },
-    edit: function(){
-
-    },
-    toggle(id) {
-      
-      const index = this.opened.indexOf(id);
-      //console.log(id);
-      if (index > -1) {
-        this.opened.splice(index, 1);
-        
-      } else {
-        this.opened.push(id);
-        console.log(this.opened);
-      }
     }
+    // editReply: function(index){
+    //   this.todos.edit = 'editmode'
+    // }
   }
 })
